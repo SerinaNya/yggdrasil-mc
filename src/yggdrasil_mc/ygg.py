@@ -6,12 +6,9 @@ from typing import Literal
 from pydantic import BaseModel, root_validator
 import requests
 
+from . import model
 
-class YggdrasilPlayerUuidApi(BaseModel):
-    id: str | None = None
-    name: str | None = None
-    existed: bool = True
-
+class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApi):
     @classmethod
     def get(cls, api_root: str, username: str):
         resp = requests.get(f"{api_root}/users/profiles/minecraft/{username}")
@@ -28,52 +25,8 @@ class YggdrasilPlayerUuidApi(BaseModel):
         return cls.get("https://api.mojang.com", username)
 
 
-def _make_hash(cls, values):
-    url: str = values["url"]
-    last_slash_location = url.rindex("/")
-    real_hash = url[last_slash_location + 1 :]
-    values["hash"] = real_hash
-    return values
 
-
-class YggdrasilTextures(BaseModel):
-    class _Skin(BaseModel):
-        class MetaData(BaseModel):
-            model: Literal["default", "slim"] = "default"
-
-        url: str | None = None
-        hash: str | None = None
-        metadata: MetaData | None = MetaData(model="default")
-        _hash: str | None = None
-
-        root_validator(pre=True, allow_reuse=True)(_make_hash)
-
-    class _Cape(BaseModel):
-        url: str | None = None
-        hash: str | None = None
-        _hash: str | None = None
-
-        root_validator(pre=True, allow_reuse=True)(_make_hash)
-
-    skin: _Skin | None = _Skin()
-    cape: _Cape | None = _Cape()
-
-
-class YggdrasilPropertiesTextures(BaseModel):
-    timestamp: date
-    profileId: str
-    profileName: str
-    textures: YggdrasilTextures
-
-
-class YggdrasilGameProfileApi(BaseModel):
-    class Properties(BaseModel):
-        textures: YggdrasilPropertiesTextures
-
-    id: str
-    name: str
-    properties: Properties  # a bit difference between API
-
+class YggdrasilGameProfileApi(model.YggdrasilGameProfileApi):
     @root_validator(pre=True)
     def pre_processer(cls, values):
         # Doc: https://wiki.vg/Mojang_API#UUID_-.3E_Profile_.2B_Skin.2FCape

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "yggdrasil-mc"
+version = "0.1b1"
+authors = [
+  { name="Xiao_Jin", email="i@xiaojin233.cn" },
+]
+description = "A simple Python lib to get player info and texture from Mojang and Blessing Skin."
+keywords = ["minecraft", "yggdrasil", "api", "mojang", "blessing skin"]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: Chinese (Simplified)",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "Topic :: Games/Entertainment",
+    "Topic :: Utilities",
+]
+dependencies = [
+  "pydantic",
+  "aiohttp",
+  "requests",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jinzhijie/yggdrasil-mc"
+"Bug Tracker" = "https://github.com/jinzhijie/yggdrasil-mc/issues"

@@ -1,12 +1,11 @@
 import json
 from base64 import b64decode
-from datetime import date
-from typing import Literal
 
-from pydantic import BaseModel, root_validator
 import requests
+from pydantic import root_validator
 
 from . import model
+
 
 class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApi):
     @classmethod
@@ -23,7 +22,6 @@ class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApi):
     @classmethod
     def getMojangServer(cls, username: str):
         return cls.get("https://api.mojang.com", username)
-
 
 
 class YggdrasilGameProfileApi(model.YggdrasilGameProfileApi):

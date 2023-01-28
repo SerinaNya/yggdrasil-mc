@@ -12,7 +12,6 @@ class YggdrasilPlayerUuidApi(BaseModel):
     existed: bool = True
 
 
-
 def _make_hash(cls, values):
     url: str = values["url"]
     last_slash_location = url.rindex("/")

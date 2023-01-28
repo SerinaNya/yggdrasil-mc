@@ -1,10 +1,9 @@
 import json
 from base64 import b64decode
-from datetime import date
-from typing import Literal
 
 import aiohttp
-from pydantic import BaseModel, root_validator
+from pydantic import root_validator
+
 from . import model
 
 

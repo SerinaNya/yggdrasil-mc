@@ -3,7 +3,7 @@ from base64 import b64decode
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, Field, root_validator
 
 
 class YggdrasilPlayerUuidApi(BaseModel):
@@ -39,8 +39,8 @@ class YggdrasilTextures(BaseModel):
 
         root_validator(pre=True, allow_reuse=True)(_make_hash)
 
-    skin: _Skin | None = _Skin()
-    cape: _Cape | None = _Cape()
+    skin: _Skin = Field(default_factory=_Skin, alias="SKIN")
+    cape: _Cape = Field(default_factory=_Cape, alias="CAPE")
 
 
 class YggdrasilPropertiesTextures(BaseModel):

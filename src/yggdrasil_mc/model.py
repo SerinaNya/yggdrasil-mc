@@ -2,6 +2,7 @@ import json
 from base64 import b64decode
 from datetime import date
 from typing import Literal
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, root_validator
 
@@ -12,35 +13,35 @@ class YggdrasilPlayerUuidApiModel(BaseModel):
     existed: bool = True
 
 
-def _make_hash(cls, values):
-    url: str = values["url"]
-    last_slash_location = url.rindex("/")
-    real_hash = url[last_slash_location + 1 :]
-    values["hash"] = real_hash
+def get_hash(cls, values):
+    url = values.get("url")
+    if url:
+        parsed = urlparse(url)
+        # get last path element
+        values["hash"] = parsed.path.split("/")[-1]
     return values
 
 
+class _SkinMetaData(BaseModel):
+    model: Literal["default", "slim"] = "default"
+
+
+class _Skin(BaseModel):
+    url: str | None = None
+    hash: str | None = None
+    metadata: _SkinMetaData | None = _SkinMetaData(model="default")
+    _get_hash = root_validator(allow_reuse=True)(get_hash)
+
+
+class _Cape(BaseModel):
+    url: str | None = None
+    hash: str | None = None
+    _get_hash = root_validator(allow_reuse=True)(get_hash)
+
+
 class YggdrasilTexturesModel(BaseModel):
-    class _Skin(BaseModel):
-        class MetaData(BaseModel):
-            model: Literal["default", "slim"] = "default"
-
-        url: str | None = None
-        hash: str | None = None
-        metadata: MetaData | None = MetaData(model="default")
-        _hash: str | None = None
-
-        root_validator(pre=True, allow_reuse=True)(_make_hash)
-
-    class _Cape(BaseModel):
-        url: str | None = None
-        hash: str | None = None
-        _hash: str | None = None
-
-        root_validator(pre=True, allow_reuse=True)(_make_hash)
-
-    skin: _Skin = Field(default_factory=_Skin, alias="SKIN")
-    cape: _Cape = Field(default_factory=_Cape, alias="CAPE")
+    skin: _Skin = Field(default=_Skin(), alias="SKIN")
+    cape: _Cape = Field(default=_Cape(), alias="CAPE")
 
 
 class YggdrasilPropertiesTexturesModel(BaseModel):

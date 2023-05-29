@@ -13,12 +13,12 @@ class YggPlayerUuid(YggApiBase):
     getMojangAsync = ygg_async.YggdrasilPlayerUuidApi.getMojangServer
 
     def get3rd(self, player_name: str):
-        return ygg.YggdrasilPlayerUuidApi.getBlessingSkinServer(
+        return ygg.YggdrasilPlayerUuidApi.getYggdrasilServer(
             api_root=self.api_root, player_name=player_name
         )
 
     async def get3rdAsync(self, player_name: str):
-        return await ygg_async.YggdrasilPlayerUuidApi.getBlessingSkinServer(
+        return await ygg_async.YggdrasilPlayerUuidApi.getYggdrasilServer(
             api_root=self.api_root, player_name=player_name
         )
 
@@ -28,11 +28,11 @@ class YggPlayerProfile(YggApiBase):
     getMojangAsync = ygg_async.YggdrasilGameProfileApi.getMojangServer
 
     def get3rd(self, player_uuid: str):
-        return ygg.YggdrasilGameProfileApi.getBlessingSkinServer(
+        return ygg.YggdrasilGameProfileApi.getYggdrasilServer(
             api_root=self.api_root, player_uuid=player_uuid
         )
 
     async def get3rdAsync(self, player_uuid: str):
-        return await ygg_async.YggdrasilGameProfileApi.getBlessingSkinServer(
+        return await ygg_async.YggdrasilGameProfileApi.getYggdrasilServer(
             api_root=self.api_root, player_uuid=player_uuid
         )

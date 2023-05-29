@@ -12,7 +12,7 @@ class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApiModel):
         return cls.parse_raw(resp.text)
 
     @classmethod
-    def getBlessingSkinServer(cls, api_root: str, player_name: str):
+    def getYggdrasilServer(cls, api_root: str, player_name: str):
         return cls.get(f"{api_root}/api", player_name)
 
     @classmethod
@@ -27,7 +27,7 @@ class YggdrasilGameProfileApi(model.YggdrasilGameProfileApiModel):
         return cls.parse_raw(resp.text)
 
     @classmethod
-    def getBlessingSkinServer(cls, api_root: str, player_uuid: str):
+    def getYggdrasilServer(cls, api_root: str, player_uuid: str):
         return cls.get(f"{api_root}/sessionserver", player_uuid)
 
     @classmethod

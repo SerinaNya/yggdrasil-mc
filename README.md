@@ -36,11 +36,10 @@ id='ca244462f8e5494791ec98f0ccf505ac' name='w84' properties=Properties(...
 Note that this package also provide the asyncio version which is powered by aiohttp:
 
 ```python
-from yggdrasil_mc.ygg_async import YggdrasilPlayerUuidApi
+from yggdrasil_mc import YggPlayerUuid, YggPlayerProfile
 
 player_name = "w84"
-
-async get_player_uuid(player_name: str = player_name)
-    player = await YggdrasilPlayerUuidApi.getMojangServer(player_name)
-    return player.id
+player = await YggPlayerUuid().getMojangAsync(player_name)
+if player.existed:
+    print(await YggPlayerProfile().getMojangAsync(player.id))
 ```

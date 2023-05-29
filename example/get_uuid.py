@@ -1,10 +1,9 @@
-from yggdrasil_mc.ygg import YggdrasilPlayerUuidApi
+from yggdrasil_mc import YggPlayerUuid, YggPlayerProfile
 
 player_name = "w84"
-player = YggdrasilPlayerUuidApi.getMojangServer(player_name)
+player = YggPlayerUuid().getMojang(player_name)
 if player.existed:
-    print(player.id)
-
+    print(YggPlayerProfile().getMojang(player.id))
 
 # OUTPUT >>>
-# ca244462f8e5494791ec98f0ccf505ac
+# id='ca244462f8e5494791ec98f0ccf505ac' name='w84' properties=Properties(...

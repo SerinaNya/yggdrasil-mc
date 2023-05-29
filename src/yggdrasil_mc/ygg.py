@@ -1,44 +1,29 @@
-import json
-from base64 import b64decode
-
-import requests
-from pydantic import root_validator
+import httpx
 
 from . import model
 
 
-class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApi):
+class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApiModel):
     @classmethod
-    def get(cls, api_root: str, username: str):
-        resp = requests.get(f"{api_root}/users/profiles/minecraft/{username}")
+    def get(cls, api_root: str, player_name: str):
+        resp = httpx.get(f"{api_root}/users/profiles/minecraft/{player_name}")
         if resp.status_code == 204:  # No content
             return cls(existed=False)
         return cls.parse_raw(resp.text)
 
     @classmethod
-    def getBlessingSkinServer(cls, api_root: str, username: str):
-        return cls.get(f"{api_root}/api", username)
+    def getBlessingSkinServer(cls, api_root: str, player_name: str):
+        return cls.get(f"{api_root}/api", player_name)
 
     @classmethod
-    def getMojangServer(cls, username: str):
-        return cls.get("https://api.mojang.com", username)
+    def getMojangServer(cls, player_name: str):
+        return cls.get("https://api.mojang.com", player_name)
 
 
-class YggdrasilGameProfileApi(model.YggdrasilGameProfileApi):
-    @root_validator(pre=True)
-    def pre_processer(cls, values):
-        # Doc: https://wiki.vg/Mojang_API#UUID_-.3E_Profile_.2B_Skin.2FCape
-        # base64 decode and a little change
-        values["properties"][0]["textures"] = json.loads(
-            b64decode(values["properties"][0]["value"])
-        )
-        # array is useless while mojang is interesting
-        values["properties"] = values["properties"][0]
-        return values
-
+class YggdrasilGameProfileApi(model.YggdrasilGameProfileApiModel):
     @classmethod
     def get(cls, api_root: str, player_uuid: str):
-        resp = requests.get(f"{api_root}/session/minecraft/profile/{player_uuid}")
+        resp = httpx.get(f"{api_root}/session/minecraft/profile/{player_uuid}")
         return cls.parse_raw(resp.text)
 
     @classmethod

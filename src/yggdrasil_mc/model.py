@@ -6,7 +6,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, root_validator
 
 
-class YggdrasilPlayerUuidApi(BaseModel):
+class YggdrasilPlayerUuidApiModel(BaseModel):
     id: str | None = None
     name: str | None = None
     existed: bool = True
@@ -20,7 +20,7 @@ def _make_hash(cls, values):
     return values
 
 
-class YggdrasilTextures(BaseModel):
+class YggdrasilTexturesModel(BaseModel):
     class _Skin(BaseModel):
         class MetaData(BaseModel):
             model: Literal["default", "slim"] = "default"
@@ -43,16 +43,16 @@ class YggdrasilTextures(BaseModel):
     cape: _Cape = Field(default_factory=_Cape, alias="CAPE")
 
 
-class YggdrasilPropertiesTextures(BaseModel):
+class YggdrasilPropertiesTexturesModel(BaseModel):
     timestamp: date
     profileId: str
     profileName: str
-    textures: YggdrasilTextures
+    textures: YggdrasilTexturesModel
 
 
-class YggdrasilGameProfileApi(BaseModel):
+class YggdrasilGameProfileApiModel(BaseModel):
     class Properties(BaseModel):
-        textures: YggdrasilPropertiesTextures
+        textures: YggdrasilPropertiesTexturesModel
 
     id: str
     name: str

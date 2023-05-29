@@ -4,7 +4,7 @@ from . import ygg, ygg_async
 class YggApiBase(object):
     api_root: str | None = None
 
-    def __init__(self, api_root: str) -> None:
+    def __init__(self, api_root: str | None = None) -> None:
         self.api_root = api_root
 
 

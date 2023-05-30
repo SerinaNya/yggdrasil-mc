@@ -19,12 +19,13 @@ This package can run in **Python 3.10+ ONLY**.
     ```
 
 2. ```python
-    from yggdrasil_mc import YggPlayerUuid, YggPlayerProfile
+    from yggdrasil_mc import YggdrasilPlayer
 
     player_name = "w84"
-    player = YggPlayerUuid().getMojang(player_name)
+    ygg = YggdrasilPlayer()
+    player = ygg.Uuid.getMojang(player_name)
     if player.existed:
-        print(YggPlayerProfile().getMojang(player.id))
+        print(ygg.Profile.getMojang(player.id))
     ```
 
 After you run these snippet, you will get the following output:
@@ -36,10 +37,11 @@ id='ca244462f8e5494791ec98f0ccf505ac' name='w84' properties=Properties(...
 Note that this package also provide the asyncio version which is powered by aiohttp:
 
 ```python
-from yggdrasil_mc import YggPlayerUuid, YggPlayerProfile
+from yggdrasil_mc import YggdrasilPlayer
 
 player_name = "w84"
-player = await YggPlayerUuid().getMojangAsync(player_name)
+ygg = YggdrasilPlayer()
+player = await ygg.Uuid.getMojangAsync(player_name)
 if player.existed:
-    print(await YggPlayerProfile().getMojangAsync(player.id))
+    print(await ygg.Profile.getMojangAsync(player.id))
 ```

@@ -36,3 +36,14 @@ class YggPlayerProfile(YggApiBase):
         return await ygg_async.YggdrasilGameProfileApi.getYggdrasilServer(
             api_root=self.api_root, player_uuid=player_uuid
         )
+
+
+class YggdrasilPlayer(YggApiBase):
+    Uuid: YggPlayerUuid
+    Profile: YggPlayerProfile
+
+    def __init__(self, api_root: str | None = None):
+        super().__init__(api_root)
+        self.Uuid = YggPlayerUuid(api_root)
+        self.Profile = YggPlayerProfile(api_root)
+

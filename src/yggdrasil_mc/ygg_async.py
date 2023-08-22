@@ -10,7 +10,7 @@ class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApiModel):
             resp = await client.get(
                 f"{api_root}/users/profiles/minecraft/{player_name}"
             )
-        if resp.status_code == 204:  # No content
+        if resp.status_code in [204, 404]:  # No Content & Not Found
                 return cls(existed=False)
         return cls.parse_raw(resp.text)
 

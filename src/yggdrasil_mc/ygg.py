@@ -7,7 +7,7 @@ class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApiModel):
     @classmethod
     def get(cls, api_root: str, player_name: str):
         resp = httpx.get(f"{api_root}/users/profiles/minecraft/{player_name}")
-        if resp.status_code == 204:  # No content
+        if resp.status_code in [204, 404]:  # No Content & Not Found
             return cls(existed=False)
         return cls.parse_raw(resp.text)
 

@@ -12,7 +12,7 @@ class YggdrasilPlayerUuidApi(model.YggdrasilPlayerUuidApiModel):
             )
         if resp.status_code in [204, 404]:  # No Content & Not Found
                 return cls(existed=False)
-        return cls.parse_raw(resp.text)
+        return cls.model_validate_json(resp.text)
 
     @classmethod
     async def getYggdrasilServer(cls, api_root: str, player_name: str):
@@ -30,7 +30,7 @@ class YggdrasilGameProfileApi(model.YggdrasilGameProfileApiModel):
             resp = await client.get(
                 f"{api_root}/session/minecraft/profile/{player_uuid}"
             )
-        return cls.parse_raw(resp.text)
+        return cls.model_validate_json(resp.text)
 
     @classmethod
     async def getYggdrasilServer(cls, api_root: str, player_uuid: str):

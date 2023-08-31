@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "yggdrasil-mc"
-version = "0.1b7"
+version = "0.1b8"
 authors = [
   { name="Xiao_Jin", email="i@xiaojin233.cn" },
 ]

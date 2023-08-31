@@ -1,10 +1,10 @@
 import json
 from base64 import b64decode
-from datetime import date
+from datetime import datetime
 from typing import Literal
 from urllib.parse import urlparse
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import model_validator, BaseModel, Field, root_validator
 
 
 class YggdrasilPlayerUuidApiModel(BaseModel):
@@ -30,13 +30,13 @@ class _Skin(BaseModel):
     url: str | None = None
     hash: str | None = None
     metadata: _SkinMetaData | None = _SkinMetaData(model="default")
-    _get_hash = root_validator(allow_reuse=True)(get_hash)
+    _get_hash = model_validator(mode="before")(get_hash)
 
 
 class _Cape(BaseModel):
     url: str | None = None
     hash: str | None = None
-    _get_hash = root_validator(allow_reuse=True)(get_hash)
+    _get_hash = model_validator(mode="before")(get_hash)
 
 
 class YggdrasilTexturesModel(BaseModel):
@@ -45,7 +45,7 @@ class YggdrasilTexturesModel(BaseModel):
 
 
 class YggdrasilPropertiesTexturesModel(BaseModel):
-    timestamp: date
+    timestamp: datetime
     profileId: str
     profileName: str
     textures: YggdrasilTexturesModel
@@ -59,7 +59,8 @@ class YggdrasilGameProfileApiModel(BaseModel):
     name: str
     properties: Properties  # a bit difference between API
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def pre_processer(cls, values):
         # Doc: https://wiki.vg/Mojang_API#UUID_-.3E_Profile_.2B_Skin.2FCape
         # base64 decode and a little change

@@ -532,4 +532,4 @@ reference = "sjtu"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "efceaf349972c4e6313ab1d4f4570953019a91c0646fa05da56c92981212b701"
+content-hash = "893cd2c8a3c86b83684d95e19ba55f01986c327d29708b24193334d8c6777de6"

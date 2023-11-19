@@ -1,0 +1,30 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'
+
+    - name: Install pipx
+      run: pip3 install pipx
+
+    - name: Install Poetry
+      run: pipx install poetry
+
+    - name: Authenticate with PyPI
+      run: poetry config pypi-token.pypi "{{ secrets.PYPI_API_TOKEN }}
+
+    - name: Publish package
+      run: poetry publish --build

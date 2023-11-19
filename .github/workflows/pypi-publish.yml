@@ -24,7 +24,7 @@ jobs:
       run: pipx install poetry
 
     - name: Authenticate with PyPI
-      run: poetry config pypi-token.pypi "{{ secrets.PYPI_API_TOKEN }}
+      run: poetry config pypi-token.pypi "{{ secrets.PYPI_API_TOKEN }}"
 
     - name: Publish package
       run: poetry publish --build

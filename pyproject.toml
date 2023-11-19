@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "yggdrasil-mc"
+version = "0.1.0"
+description = ""
+authors = ["SerinaNya <34389622+SerinaNya@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.5.1"
+httpx = {extras = ["http2"], version = "^0.25.1"}
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+
+
+[[tool.poetry.source]]
+name = "sjtu"
+url = "https://mirror.sjtu.edu.cn/pypi/web/simple"
+priority = "default"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

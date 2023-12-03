@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import AliasPath, BaseModel, Field, HttpUrl
 
 
 class PlayerUuid(BaseModel):
@@ -39,7 +39,7 @@ class PlayerCape(PlayerTexutureBase):
 
 
 class PlayerProfile(BaseModel):
-    id: str
-    name: str
-    skin: PlayerSkin | None = Field(default=None, alias="SKIN")
-    cape: PlayerCape | None = Field(default=None, alias="CAPE")
+    id: str = Field(..., validation_alias="profileId")
+    name: str =  Field(..., validation_alias="profileName")
+    skin: PlayerSkin | None = Field(default=None, validation_alias=AliasPath("textures", "SKIN"))
+    cape: PlayerCape | None = Field(default=None, validation_alias=AliasPath("textures", "CAPE"))

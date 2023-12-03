@@ -1,3 +1,4 @@
+from base64 import b64decode
 from urllib.parse import urljoin
 from uuid import UUID
 
@@ -56,7 +57,7 @@ class YggdrasilMC:
 
         match response.status_code:
             case httpx.codes.OK:  # 200
-                return PlayerProfile.model_validate(response.json())
+                return PlayerProfile.model_validate_json(b64decode(response.json().get("properties")[0].get("value")))
             case httpx.codes.NO_CONTENT:  # 204
                 raise PlayerNotFoundError(
                     f"Server has responded 204 No Content, {player_uuid=}"
@@ -91,7 +92,7 @@ class YggdrasilMC:
 
         match response.status_code:
             case httpx.codes.OK:  # 200
-                player_uuid = PlayerUuid.model_validate(response.json())
+                player_uuid = PlayerUuid(**response.json())
             case httpx.codes.NOT_FOUND:  # 404
                 raise PlayerNotFoundError(response.text)
             case _:

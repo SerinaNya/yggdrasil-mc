@@ -1,11 +1,11 @@
 from base64 import b64decode
-from urllib.parse import urljoin
 from uuid import UUID
 
 import httpx
 
 from yggdrasil_mc.exceptions import PlayerNotFoundError
 from yggdrasil_mc.models import PlayerProfile, PlayerUuid
+from yggdrasil_mc.utils import urlstrjoin
 
 
 class YggdrasilMC:
@@ -49,7 +49,7 @@ class YggdrasilMC:
 
         async with httpx.AsyncClient(
             http2=True,
-            base_url=urljoin(self.api_root, "sessionserver")
+            base_url=urlstrjoin(self.api_root, "sessionserver")
             if self.api_root
             else "https://sessionserver.mojang.com",
         ) as client:
@@ -84,7 +84,7 @@ class YggdrasilMC:
 
         async with httpx.AsyncClient(
             http2=True,
-            base_url=urljoin(self.api_root, "api")
+            base_url=urlstrjoin(self.api_root, "api")
             if self.api_root
             else "https://api.mojang.com",
         ) as client:

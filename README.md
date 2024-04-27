@@ -19,9 +19,9 @@ _A simple Python lib to get player info and texture from Mojang and Yggdrasil AP
 </p>
 
 
-## Attention
+## ⚠️ Attention
 
-This package can be used with **Python 3.10+ ONLY**.
+This package can be used with **Python 3.10+**.
 
 ## Usage
 
@@ -34,4 +34,13 @@ from yggdrasil_mc.client import YggdrasilMC
 
 ygg = YggdrasilMC()
 await ygg.by_name_async("SerinaNya")
+
+# return PlayerProfile
+PlayerProfile(
+    id='8705a5560b7447e8ba869169c31fb5ef', 
+    name='SerinaNya', 
+    skin=PlayerSkin(
+        url=Url('http://textures.minecraft.net/texture/7781fa8ed3e2aa907944ec0f1ec391ad05955eb9c6424d911d409b00a69ea516'), 
+        metadata=PlayerSkin_MetaData(model='slim')), 
+    cape=None)
 ```

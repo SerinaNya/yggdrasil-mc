@@ -13,10 +13,10 @@ class YggdrasilMC:
 
     def __init__(self, api_root: str | None = None):
         """
-        Initializes the class instance.
+        Initialize YggdrasilMC.
 
         Parameters:
-            api_root (str | None): The root URL of the API. If None, the default Mojang server is used.
+            `api_root` (`str | None`): The root URL of the API. If None, Mojang server will be used.
 
         Returns:
             None
@@ -30,22 +30,23 @@ class YggdrasilMC:
         Get a player's profile by their UUID. (async)
 
         Args:
-            player_uuid (str | PlayerUuid | UUID): The UUID / PlayerUuid of the player.
+            `player_uuid: str | PlayerUuid | UUID` => The UUID / `PlayerUuid` of the player.
 
         Returns:
-            PlayerProfile: The player's profile.
+            `PlayerProfile`: The player's profile.
 
         Raises:
             PlayerNotFoundError: If the player is not found.
-            ValueError: If an unexpected error occurs.
+            httpx.HTTPStatusError or ValueError: If an unexpected http status error occurs.
         """
 
-        # Convert player_uuid to a string or UUID if necessary
-        player_uuid: str | UUID = (
-            player_uuid.id if isinstance(player_uuid, PlayerUuid) else player_uuid
-        )
-        # Convert player_uuid to a hex string if necessary
-        player_uuid: str = player_uuid.hex if isinstance(player_uuid, UUID) else player_uuid
+        # Convert player_uuid to string
+        if isinstance(player_uuid, UUID):
+            _player_uuid = player_uuid.hex
+        elif isinstance(player_uuid, PlayerUuid):
+            _player_uuid = player_uuid.id
+        else:
+            _player_uuid = player_uuid
 
         async with httpx.AsyncClient(
             http2=True,
@@ -53,19 +54,22 @@ class YggdrasilMC:
             if self.api_root
             else "https://sessionserver.mojang.com",
         ) as client:
-            response = await client.get(f"/session/minecraft/profile/{player_uuid}")
+            response = await client.get(f"/session/minecraft/profile/{_player_uuid}")
 
         match response.status_code:
             case httpx.codes.OK:  # 200
-                return PlayerProfile.model_validate_json(b64decode(response.json().get("properties")[0].get("value")))
+                return PlayerProfile.model_validate_json(
+                    b64decode(response.json().get("properties")[0].get("value"))
+                )
             case httpx.codes.NO_CONTENT:  # 204
                 raise PlayerNotFoundError(
-                    f"Server has responded 204 No Content, {player_uuid=}"
+                    f"Server has responded 204 No Content, {_player_uuid=}"
                 )
             case httpx.codes.BAD_REQUEST:  # 400
                 raise PlayerNotFoundError(response.text)
             case _:
-                raise ValueError(response.text)
+                response.raise_for_status()
+                raise ValueError(f"Unexpected HTTP status code: {response.status_code}")
 
     async def by_name_async(self, player_name: str) -> PlayerProfile:
         """
@@ -79,7 +83,7 @@ class YggdrasilMC:
 
         Raises:
             PlayerNotFoundError: If the player is not found.
-            ValueError: If an unexpected error occurs.
+            httpx.HTTPStatusError or ValueError: If an unexpected http status error occurs.
         """
 
         async with httpx.AsyncClient(
@@ -96,6 +100,7 @@ class YggdrasilMC:
             case httpx.codes.NOT_FOUND:  # 404
                 raise PlayerNotFoundError(response.text)
             case _:
-                raise ValueError(response.text)
+                response.raise_for_status()
+                raise ValueError(f"Unexpected HTTP status code: {response.status_code}")
 
         return await self.by_uuid_async(player_uuid)

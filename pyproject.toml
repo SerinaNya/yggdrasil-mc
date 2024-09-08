@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yggdrasil-mc"
-version = "0.2.4"
+version = "0.2.5"
 description = "A simple Python lib to get player info and texture from Mojang and Yggdrasil APIs. / 一个简单的 Python 库，可从 Mojang 和 Yggdrasil APIs 获取玩家的信息和材质。"
 license = "AGPL-3.0-or-later"
 authors = ["SerinaNya <34389622+SerinaNya@users.noreply.github.com>"]

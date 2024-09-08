@@ -99,7 +99,7 @@ class YggdrasilMC:
                 player_uuid = PlayerUuid(**response.json())
             case httpx.codes.NO_CONTENT:  # 204
                 raise PlayerNotFoundError(
-                    f"Server has responded 204 No Content, {player_uuid=}"
+                    f"Server has responded 204 No Content, {player_name=}"
                 )
             case httpx.codes.NOT_FOUND:  # 404
                 raise PlayerNotFoundError(response.text)

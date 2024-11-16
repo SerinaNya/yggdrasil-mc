@@ -1,6 +1,7 @@
+from re import A
 from typing import Literal, Annotated
 
-from pydantic import AliasPath, BaseModel, Field, AnyHttpUrl
+from pydantic import AliasChoices, AliasPath, BaseModel, Field, AnyHttpUrl
 
 
 class PlayerUuid(BaseModel):
@@ -39,8 +40,8 @@ class PlayerCape(PlayerTexutureBase):
 
 
 class PlayerProfile(BaseModel):
-    id: Annotated[str, Field(..., validation_alias="profileId")]
-    name: Annotated[str, Field(..., validation_alias="profileName")]
+    id: Annotated[str, Field(..., validation_alias=AliasChoices("profileId", "id"))]
+    name: Annotated[str, Field(..., validation_alias=AliasChoices("profileName", "name"))]
 
     skin: Annotated[
         PlayerSkin | None,

@@ -58,9 +58,18 @@ class YggdrasilMC:
 
         match response.status_code:
             case httpx.codes.OK:  # 200
-                return PlayerProfile.model_validate_json(
-                    b64decode(response.json().get("properties")[0].get("value"))
-                )
+                properties: list = response.json().get("properties")
+                if not properties:  # if list is empty
+                    return PlayerProfile(
+                        id=response.json().get("id"),
+                        name=response.json().get("name"),
+                        skin=None,
+                        cape=None,
+                    )
+                else:
+                    return PlayerProfile.model_validate_json(
+                        b64decode(properties[0].get("value"))
+                    )
             case httpx.codes.NO_CONTENT:  # 204
                 raise PlayerNotFoundError(
                     f"Server has responded 204 No Content, {_player_uuid=}"
